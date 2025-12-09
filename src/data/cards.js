@@ -1,12 +1,15 @@
+// src/data/cards.js
+
 // --- IMPORT MODEL 3D DARI ASSETS ---
-// Pastikan file .glb sudah ada di folder src/assets/models/
-import modelJantung from '@/assets/models/heart.glb';
-import modelParu from '@/assets/models/lungs.glb';
-import modelSehat from '@/assets/models/health.glb'; 
-// Gunakan placeholder heart.glb jika model spesifik belum ada
-import modelPembuluh from '@/assets/models/heart.glb'; 
-import modelDarah from '@/assets/models/heart.glb';
-import modelTubuh from '@/assets/models/heart.glb';
+// PENTING: Akhiran '?url' memberi tahu Vite untuk mengambil path file-nya
+import modelJantung from '../assets/models/heart.glb?url';
+import modelParu from '../assets/models/lungs.glb?url';
+import modelSehat from '../assets/models/health.glb?url';
+
+// Menggunakan heart.glb sebagai placeholder untuk model lain yang belum ada
+import modelPembuluh from '../assets/models/heart.glb?url'; 
+import modelDarah from '../assets/models/heart.glb?url';
+import modelTubuh from '../assets/models/heart.glb?url';
 
 export const cardsData = [
   {
@@ -15,14 +18,12 @@ export const cardsData = [
     subtitle: 'Pusat Kehidupan',
     description: 'Halo! Aku adalah mesin utama di tubuhmu. Ukuranku sebesar kepalan tanganmu dan aku duduk manis sedikit di kiri dadamu. Aku punya 4 kamar rahasia (ruang) yang bekerja sama: ada yang menerima darah masuk, ada yang mendorongnya keluar. Pintu-pintu kamarku disebut "Katup" agar darah tidak salah jalan! Tubuhku dibungkus selimut pelindung bernama "Perikardium" agar aku aman dari gesekan. Hebatnya, aku punya listrik alami sendiri yang membuatku berdetak ribuan kali sehari tanpa henti, bahkan saat kamu tidur lelap!',
     
-    // IMAGE (Wajib ada untuk HomeView)
     image: 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?q=80&w=1000&auto=format&fit=crop',
     
     modelUrl: modelJantung, 
     color: 'bg-rose-500',
     bgGradient: 'from-rose-100 to-rose-300',
 
-    // QUIZ (5 Soal)
     quiz: [
       {
         question: "Berapa jumlah ruang rahasia yang dimiliki jantung?",

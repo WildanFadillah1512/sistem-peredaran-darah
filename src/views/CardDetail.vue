@@ -68,7 +68,7 @@
 
         <div class="bg-white/90 backdrop-blur-sm border-[3px] border-blue-400 shadow-[4px_4px_0_#60A5FA] px-6 py-3 rounded-[2rem] transform -rotate-2 animate-float-y pointer-events-auto">
           <div class="text-[10px] md:text-xs font-black text-blue-400 uppercase tracking-widest mb-1">
-             ✨ Ruang Belajar ✨
+              ✨ Ruang Belajar ✨
           </div>
           <div class="text-xl md:text-3xl font-black text-slate-700 leading-none">
             {{ card?.title }}
@@ -76,7 +76,7 @@
         </div>
       </div>
 
-      <div class="absolute bottom-0 left-0 w-full z-50 px-4 pb-6 md:pb-8 pointer-events-none flex justify-center">
+      <div class="absolute bottom-4 md:bottom-8 left-0 w-full z-50 px-4 pointer-events-none flex justify-center">
         
         <div class="bg-white border-[4px] border-slate-800 shadow-[0_8px_0_rgba(0,0,0,0.2)] rounded-[2.5rem] p-5 md:p-6 w-full max-w-3xl relative overflow-hidden pointer-events-auto">
           
@@ -102,10 +102,10 @@
 
             <div class="flex-1 text-center md:text-left w-full min-w-0">
                
-               <div class="relative bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 md:p-5 max-h-[140px] overflow-y-auto custom-scrollbar group">
+               <div class="relative bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 md:p-5 max-h-[30vh] md:max-h-[250px] overflow-y-auto custom-scrollbar group">
                  <span class="absolute top-2 left-2 text-4xl text-blue-200 opacity-50 font-serif leading-none">“</span>
                  
-                 <p class="text-base md:text-lg text-slate-600 font-bold leading-relaxed relative z-10">
+                 <p class="text-base md:text-lg text-slate-600 font-bold leading-relaxed relative z-10 pr-2">
                    {{ card.description }}
                  </p>
                </div>
@@ -180,7 +180,6 @@ const getRandomStyle = () => {
   };
 };
 
-// Text to Speech Logic (Sama seperti sebelumnya, solid)
 const getBestVoice = () => {
   const voices = speechSynthesis.getVoices();
   let bestVoice = voices.find(v => v.lang === 'id-ID' && v.name.includes('Google'));
@@ -200,7 +199,7 @@ const playAudio = () => {
   const selectedVoice = getBestVoice();
   if (selectedVoice) utterance.voice = selectedVoice;
   utterance.lang = 'id-ID';
-  utterance.rate = 0.9; // Sedikit lebih lambat untuk anak
+  utterance.rate = 0.9; 
   utterance.pitch = 1.1; 
   utterance.onstart = () => isPlaying.value = true;
   utterance.onend = () => isPlaying.value = false;
@@ -214,7 +213,6 @@ const goToQuiz = () => {
 };
 
 onMounted(() => {
-  // Auto play dengan delay sedikit agar user siap
   setTimeout(() => { playAudio(); }, 1500);
 });
 
@@ -271,9 +269,9 @@ onUnmounted(() => {
 }
 .animate-fade-in-out { animation: fadeOut 4s ease-out forwards; animation-delay: 1s; }
 
-/* Custom Scrollbar Lucu */
+/* Custom Scrollbar Lucu - Diperbesar sedikit agar mudah di-tap */
 .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; margin: 10px 0; }
 .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; border: 2px solid #f1f5f9; }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen w-full overflow-hidden bg-[#FFF9F0]">
+  <div class="fixed inset-0 w-full h-full overflow-hidden bg-[#FFF9F0]">
     
     <div class="absolute inset-0 pointer-events-none z-0">
        <div class="absolute top-[-20%] left-[-20%] w-[80vw] h-[80vw] bg-yellow-300/20 blur-[100px] rounded-full animate-pulse-slow"></div>
@@ -8,7 +8,10 @@
 
     <router-view v-slot="{ Component }">
       <transition name="fly-zoom" mode="out-in">
-        <component :is="Component" class="absolute inset-0 w-full h-full z-10" />
+        <component 
+          :is="Component" 
+          class="absolute inset-0 w-full h-full z-10 overflow-hidden" 
+        />
       </transition>
     </router-view>
     
@@ -16,40 +19,43 @@
 </template>
 
 <style>
+/* Reset Dasar */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
   background-color: #FFF9F0;
+  /* Mencegah efek bounce scroll di iOS (Penting untuk app feel) */
+  overscroll-behavior: none; 
+  /* Kunci scroll body agar yang scroll hanya elemen di dalam Vue */
+  overflow: hidden; 
 }
 
-/* --- ANIMASI FLY TO (INNOVATIVE) --- */
-
+/* --- ANIMASI TRANSISI HALAMAN (FLY ZOOM) --- */
 .fly-zoom-enter-active {
-  /* Durasi cepat tapi elastis (seperti mainan) */
-  animation: fly-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: fly-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); /* Lebih smooth */
   z-index: 50;
+  transform-origin: center bottom;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* Shadow saat melayang */
 }
 
 .fly-zoom-leave-active {
-  /* Keluar memudar ke belakang */
-  animation: fly-out 0.5s ease-in;
+  animation: fly-out 0.4s ease-in;
   z-index: 0;
+  pointer-events: none; /* Mencegah klik saat halaman keluar */
 }
 
 @keyframes fly-in {
   0% {
     opacity: 0;
-    /* Mulai dari kecil (seperti kartu) dan sedikit di bawah */
-    transform: scale(0.3) translateY(100px);
-    border-radius: 100px; /* Mulai bulat */
+    transform: scale(0.9) translateY(40px);
+    border-radius: 24px; /* Efek kartu saat masuk */
   }
   100% {
     opacity: 1;
     transform: scale(1) translateY(0);
-    border-radius: 0px; /* Menjadi kotak layar penuh */
+    border-radius: 0px;
   }
 }
 
@@ -61,8 +67,8 @@ html, body {
   }
   100% {
     opacity: 0;
-    transform: scale(1.1); /* Zoom in sedikit saat hilang */
-    filter: blur(20px); /* Efek cinematic blur */
+    transform: scale(0.95);
+    filter: blur(4px);
   }
 }
 

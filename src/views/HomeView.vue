@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen w-full bg-[#E0F7FA] font-['Fredoka'] text-slate-800 relative flex flex-col overflow-hidden selection:bg-pink-300 selection:text-white">
+  <div class="min-h-screen md:h-screen w-full bg-[#E0F7FA] font-['Fredoka'] text-slate-800 relative flex flex-col overflow-y-auto md:overflow-hidden selection:bg-pink-300 selection:text-white pb-24 md:pb-0">
     
     <component is="style">
       @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600;700&display=swap');
@@ -9,7 +9,7 @@
          style="background-image: radial-gradient(#2DD4BF 3px, transparent 3px); background-size: 24px 24px;">
     </div>
 
-    <nav class="absolute top-0 left-0 w-full z-50 px-4 py-3 flex justify-between md:justify-center pointer-events-none">
+    <nav class="fixed md:absolute top-0 left-0 w-full z-50 px-4 py-3 flex justify-between md:justify-center pointer-events-none transition-all duration-300 bg-[#E0F7FA]/90 md:bg-transparent backdrop-blur-md md:backdrop-blur-none border-b-2 border-slate-200 md:border-0">
       <div class="bg-white/90 backdrop-blur-md border-b-4 border-r-4 border-blue-400 px-4 py-2 md:px-6 md:py-3 rounded-full shadow-xl flex items-center gap-3 pointer-events-auto transition-transform hover:scale-105">
         <span class="text-2xl md:text-4xl animate-bounce">🎒</span>
         <div>
@@ -20,19 +20,20 @@
       </div>
     </nav>
 
-    <div class="flex-1 flex flex-col md:flex-row w-full h-full pt-20 pb-2 px-2 md:pt-24 md:pb-6 md:px-6 gap-2 md:gap-4">
+    <div class="flex-1 flex flex-col md:flex-row w-full h-auto md:h-full pt-24 px-4 md:pt-24 md:pb-6 md:px-6 gap-5 md:gap-4">
       
       <div 
         v-for="(card, index) in cardList" 
         :key="card.id"
         class="group relative transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
-               /* Style Border & Rounding sesuai gambar */
                rounded-3xl border-4 border-slate-900 cursor-pointer overflow-hidden shadow-lg
-               /* Layout Internal: Row di Desktop, Col di Mobile */
-               flex flex-col md:flex-row bg-white"
+               flex flex-col md:flex-row bg-white flex-shrink-0"
         :class="[
-           // Jika aktif, kartu membesar (flex-10), jika tidak tetap terlihat (flex-1)
-           activeCardId === card.id ? 'flex-[8] md:flex-[10] z-20 shadow-2xl ring-4 ring-yellow-400 ring-offset-2 ring-offset-[#E0F7FA]' : 'flex-[2] hover:flex-[3]',
+           // Mobile Active: Tinggi 650px (Lebih lega)
+           activeCardId === card.id ? 'h-[650px]' : 'h-32',
+           // Desktop Logic
+           'md:h-full',
+           activeCardId === card.id ? 'md:flex-[10] z-20 shadow-2xl ring-4 ring-yellow-400 ring-offset-2 ring-offset-[#E0F7FA]' : 'md:flex-[2] md:hover:flex-[3]',
         ]"
         @click="handleCardClick(card.id)"
         @mouseenter="handleMouseEnter(card.id)"
@@ -40,7 +41,12 @@
       >
         
         <div class="relative transition-all duration-700 overflow-hidden"
-             :class="activeCardId === card.id ? 'flex-[1] h-1/3 md:h-full' : 'flex-[3] h-3/4 md:h-full'">
+             :class="[
+               // Mobile: Gambar 35%
+               activeCardId === card.id ? 'h-[35%]' : 'h-full',
+               // Desktop
+               activeCardId === card.id ? 'md:h-full md:flex-[1]' : 'md:h-full md:flex-[3]'
+             ]">
              
           <div class="absolute inset-0 transition-colors duration-500" :class="card.bgColor"></div>
           
@@ -70,40 +76,45 @@
              </h3>
           </div>
 
-           <div class="md:hidden absolute bottom-4 w-full text-center transition-opacity duration-300 z-20"
+           <div class="md:hidden absolute bottom-4 w-full text-center transition-opacity duration-300 z-20 px-4"
                :class="activeCardId === card.id ? 'opacity-0' : 'opacity-100'">
-             <span class="text-white text-lg font-black uppercase drop-shadow-md tracking-wide">
-               {{ card.title }}
-             </span>
+             <div class="bg-white/20 backdrop-blur-md rounded-xl py-1 px-3 border border-white/30 inline-block">
+               <span class="text-white text-lg font-black uppercase drop-shadow-md tracking-wide leading-none">
+                 {{ card.title }}
+               </span>
+             </div>
           </div>
         </div>
 
 
         <div class="relative flex flex-col justify-center bg-white transition-all duration-700 overflow-hidden border-l-0 md:border-l-4 border-slate-100"
-             :class="activeCardId === card.id ? 'flex-[2] md:flex-[1] h-2/3 md:h-full opacity-100 p-4 md:p-10' : 'flex-[1] h-1/4 md:h-full p-0'">
+             :class="[
+               activeCardId === card.id ? 'flex-1 opacity-100 p-6 md:p-10' : 'h-0 p-0 opacity-0',
+               activeCardId === card.id ? 'md:h-full md:flex-[1]' : 'md:h-full md:flex-[1]'
+             ]">
           
-          <div class="flex flex-col h-full justify-center overflow-y-auto no-scrollbar min-w-[200px] transition-opacity duration-500 delay-100"
+          <div class="flex flex-col h-full justify-center overflow-y-auto no-scrollbar min-w-[200px] transition-opacity duration-500 delay-100 pb-4"
                :class="activeCardId === card.id ? 'opacity-100' : 'opacity-0'">
              
              <div class="inline-block self-start bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-2 shrink-0">
                {{ card.subtitle }}
              </div>
 
-             <h2 class="text-2xl md:text-4xl font-black text-slate-800 leading-tight mb-3 shrink-0">
+             <h2 class="text-3xl md:text-4xl font-black text-slate-800 leading-tight mb-4 shrink-0">
                {{ card.title }}
              </h2>
 
-             <p class="text-slate-500 text-sm md:text-lg font-bold leading-relaxed mb-6">
+             <p class="text-slate-500 text-base md:text-lg font-bold leading-relaxed mb-8">
                {{ card.description }}
              </p>
 
-             <div class="mt-auto shrink-0">
+             <div class="mt-auto shrink-0 pt-2">
                <button 
                  @click.stop="goToDetail(card.id)" 
-                 class="w-full bg-[#FFD93D] hover:bg-[#FFC107] text-slate-900 border-b-4 border-yellow-600 active:border-b-0 active:translate-y-1 px-6 py-3 rounded-xl font-black shadow-lg flex items-center justify-center gap-2 transition-all group-btn"
+                 class="w-full bg-[#FFD93D] hover:bg-[#FFC107] text-slate-900 border-b-[6px] border-yellow-600 active:border-b-0 active:translate-y-2 px-6 py-4 rounded-2xl font-black shadow-lg flex items-center justify-center gap-2 transition-all group-btn"
                >
                  <span>MULAI</span>
-                 <span class="group-btn-hover:rotate-12 transition-transform text-lg">🚀</span>
+                 <span class="group-btn-hover:rotate-12 transition-transform text-xl">🚀</span>
                </button>
              </div>
           </div>
@@ -112,6 +123,8 @@
 
       </div>
 
+      <div class="h-24 w-full md:hidden flex-shrink-0"></div>
+
     </div>
   </div>
 </template>
@@ -119,8 +132,10 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+// Ganti path ini sesuai project Anda
+// import { cardsData } from '../data/cards'; 
 
-// Data Cards disesuaikan dengan warna solid agar mirip referensi
+// DATA DUMMY UNTUK CONTOH (Hapus jika sudah import)
 const cardsData = [
   { 
     id: 'jantung', 
@@ -131,7 +146,7 @@ const cardsData = [
     bgColor: 'bg-[#FF4757]', 
   },
   { 
-    id: 'pembuluh', 
+    id: 'pembuluh-darah', 
     title: 'PEMBULUH DARAH', 
     subtitle: 'Jalan Raya Tubuh',
     description: 'Bayangkan jalan tol super panjang di dalam tubuhmu! Pembuluh darah mengantar nutrisi dan oksigen ke setiap sel.',
@@ -147,7 +162,7 @@ const cardsData = [
     bgColor: 'bg-[#FF6B6B]', 
   },
   { 
-    id: 'paru', 
+    id: 'peredaran-kecil', 
     title: 'PEREDARAN KECIL', 
     subtitle: 'Menuju Paru-paru',
     description: 'Perjalanan singkat namun penting! Darah pergi ke paru-paru untuk mengambil oksigen segar dan membuang nafas kotor.',
@@ -155,7 +170,7 @@ const cardsData = [
     bgColor: 'bg-[#48DBFB]', 
   },
   { 
-    id: 'besar', 
+    id: 'peredaran-besar', 
     title: 'PEREDARAN BESAR', 
     subtitle: 'Keliling Tubuh',
     description: 'Waktunya jalan-jalan jauh! Darah kaya oksigen diantar dari ujung kepala sampai ujung kaki agar kita bisa bergerak.',
@@ -163,7 +178,7 @@ const cardsData = [
     bgColor: 'bg-[#FFA502]', 
   },
   { 
-    id: 'sehat', 
+    id: 'fungsi-manfaat', 
     title: '8 KEKUATAN SUPER', 
     subtitle: 'Tips Kesehatan',
     description: 'Ingin tubuhmu sekuat superhero? Pelajari 8 rahasia makanan dan aktivitas agar jantungmu tetap kuat!',
@@ -179,8 +194,6 @@ const activeCardId = ref(null);
 const goToDetail = (id) => {
   router.push(`/card/${id}`);
 };
-
-// --- LOGIKA HIBRIDA ---
 
 const handleMouseEnter = (id) => {
   if (window.innerWidth >= 768) {
@@ -198,15 +211,20 @@ const handleCardClick = (id) => {
   if (window.innerWidth >= 768) {
     goToDetail(id);
   } else {
+    // Mobile: Toggle Buka/Tutup
     if (activeCardId.value === id) {
       activeCardId.value = null; 
     } else {
       activeCardId.value = id; 
+      // Auto Scroll agar kartu terlihat penuh (delay sedikit agar animasi jalan dulu)
+      setTimeout(() => {
+        const el = document.activeElement; // Atau target event
+        if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
     }
   }
 };
 
-// Helper Emoji
 const getEmoji = (id) => {
   if (id.includes('jantung')) return '❤️';
   if (id.includes('pembuluh')) return '🛣️';
