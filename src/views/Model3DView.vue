@@ -24,13 +24,16 @@
         {{ getThemeIcon(card?.id) }}
       </div>
     </div>
+
     <!-- Loading State -->
     <div
       v-if="!card"
       class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-md"
     >
-      <div class="text-9xl animate-bounce">🤔</div>
-      <h2 class="mt-6 text-3xl font-black text-blue-500 tracking-wider">
+      <div class="text-6xl md:text-9xl animate-bounce">🤔</div>
+      <h2
+        class="mt-6 text-2xl md:text-3xl font-black text-blue-500 tracking-wider"
+      >
         Sedang Menyiapkan...
       </h2>
     </div>
@@ -54,12 +57,12 @@
           style="background: transparent"
         ></iframe>
 
-        <!-- Hint untuk user -->
+        <!-- Hint untuk user - Responsive -->
         <div
           class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-0 animate-fade-in-out z-20"
         >
           <div
-            class="bg-black/50 text-white px-4 py-2 rounded-full font-bold backdrop-blur-sm"
+            class="bg-black/50 text-white px-3 py-2 md:px-4 md:py-2 rounded-full text-sm md:text-base font-bold backdrop-blur-sm"
           >
             👆 Putar aku!
           </div>
@@ -86,29 +89,56 @@
           style="pointer-events: auto"
         ></canvas>
 
-        <!-- AR Loading Indicator -->
+        <!-- AR Loading Indicator - Responsive -->
         <div
           v-if="isLoadingAR"
           class="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-30"
         >
-          <div class="text-center">
-            <div class="text-6xl mb-4 animate-bounce">📸</div>
-            <p class="text-white font-black text-lg">Mengaktifkan Kamera...</p>
+          <div class="text-center px-4">
+            <div class="text-4xl md:text-6xl mb-4 animate-bounce">📸</div>
+            <p class="text-white font-black text-base md:text-lg">
+              Mengaktifkan Kamera...
+            </p>
           </div>
         </div>
 
-        <!-- Camera Error -->
+        <!-- Camera Error - Responsive -->
         <div
           v-if="cameraError"
-          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white px-6 py-4 rounded-2xl font-black text-center max-w-md z-30"
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white px-4 py-3 md:px-6 md:py-4 rounded-xl md:rounded-2xl font-black text-center max-w-[90%] md:max-w-md z-30 text-sm md:text-base"
         >
-          <div class="text-4xl mb-2">⚠️</div>
-          <p class="text-sm">{{ cameraError }}</p>
+          <div class="text-3xl md:text-4xl mb-2">⚠️</div>
+          <p>{{ cameraError }}</p>
+        </div>
+
+        <!-- AR Controls - Responsive Position -->
+        <div
+          class="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2 md:gap-4"
+        >
+          <button
+            @click="resetModelPosition"
+            class="bg-white/90 hover:bg-white text-slate-800 px-3 py-2 md:px-5 md:py-3 rounded-full font-black text-xs md:text-sm shadow-lg border-2 border-slate-200 transition-all active:scale-95 flex items-center gap-1 md:gap-2"
+          >
+            <span class="text-base md:text-lg">🔄</span>
+            <span class="hidden sm:inline">Reset</span>
+          </button>
+
+          <button
+            @click="toggleAutoRotate"
+            class="bg-white/90 hover:bg-white text-slate-800 px-3 py-2 md:px-5 md:py-3 rounded-full font-black text-xs md:text-sm shadow-lg border-2 border-slate-200 transition-all active:scale-95 flex items-center gap-1 md:gap-2"
+          >
+            <span class="text-base md:text-lg">{{
+              autoRotate ? "⏸️" : "▶️"
+            }}</span>
+            <span class="hidden sm:inline">{{
+              autoRotate ? "Pause" : "Putar"
+            }}</span>
+          </button>
         </div>
       </div>
 
-      <!-- Top Bar -->
-      <div class="absolute top-0 left-0 w-full p-3 md:p-6 z-50">
+      <!-- Top Bar - Responsive -->
+      <div class="absolute top-0 left-0 w-full p-2 md:p-3 lg:p-6 z-50">
         <div class="flex items-center justify-between gap-2">
           <!-- Back Button (hanya muncul saat BUKAN AR mode) -->
           <button
@@ -117,43 +147,43 @@
             class="group pointer-events-auto"
           >
             <div
-              class="bg-white border-[3px] border-slate-800 shadow-[4px_4px_0_#1e293b] active:shadow-none active:translate-x-1 active:translate-y-1 p-2.5 md:p-3 rounded-2xl transition-all flex items-center justify-center hover:bg-red-100 group-hover:rotate-3"
+              class="bg-white border-2 md:border-[3px] border-slate-800 shadow-[3px_3px_0_#1e293b] md:shadow-[4px_4px_0_#1e293b] active:shadow-none active:translate-x-1 active:translate-y-1 p-2 md:p-2.5 lg:p-3 rounded-xl md:rounded-2xl transition-all flex items-center justify-center hover:bg-red-100 group-hover:rotate-3"
             >
               <ArrowLeft
-                class="w-6 h-6 md:w-8 md:h-8 text-slate-800"
+                class="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8 text-slate-800"
                 stroke-width="4"
               />
             </div>
           </button>
 
-          <!-- Title Badge + AR Button Container -->
-          <div class="flex flex-col items-end gap-2 flex-1">
-            <!-- Title Badge -->
+          <!-- Title Badge + AR Button Container - Responsive -->
+          <div class="flex flex-col items-end gap-1.5 md:gap-2 flex-1">
+            <!-- Title Badge - Responsive -->
             <div
-              class="bg-white/90 backdrop-blur-sm border-[3px] border-blue-400 shadow-[4px_4px_0_#60A5FA] px-4 py-2 md:px-6 md:py-3 rounded-[2rem] transform -rotate-2 animate-float-y pointer-events-auto"
+              class="bg-white/90 backdrop-blur-sm border-2 md:border-[3px] border-blue-400 shadow-[3px_3px_0_#60A5FA] md:shadow-[4px_4px_0_#60A5FA] px-3 py-1.5 md:px-4 md:py-2 lg:px-6 lg:py-3 rounded-2xl md:rounded-[2rem] transform -rotate-2 animate-float-y pointer-events-auto"
             >
               <div
-                class="text-[10px] md:text-xs font-black text-blue-400 uppercase tracking-widest mb-0.5 md:mb-1"
+                class="text-[8px] md:text-[10px] lg:text-xs font-black text-blue-400 uppercase tracking-widest mb-0 md:mb-0.5 lg:mb-1"
               >
                 {{ isARMode ? "📸 AR Aktif" : "🔍 Model 3D" }}
               </div>
               <div
-                class="text-base md:text-3xl font-black text-slate-700 leading-none"
+                class="text-sm md:text-base lg:text-3xl font-black text-slate-700 leading-none"
               >
                 {{ card?.title }}
               </div>
             </div>
 
-            <!-- AR Button -->
+            <!-- AR Button - Responsive -->
             <button
               @click="toggleAR"
               :class="`${
                 isARMode
                   ? 'bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-400 hover:to-orange-400'
                   : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400'
-              } text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full font-black text-xs md:text-sm shadow-[3px_3px_0_#000] border-2 border-white transition-all active:translate-x-1 active:translate-y-1 active:shadow-none flex items-center gap-2 animate-float-y pointer-events-auto`"
+              } text-white px-3 py-1.5 md:px-4 md:py-2 lg:px-5 lg:py-2.5 rounded-full font-black text-[10px] md:text-xs lg:text-sm shadow-[2px_2px_0_#000] md:shadow-[3px_3px_0_#000] border border-white md:border-2 transition-all active:translate-x-1 active:translate-y-1 active:shadow-none flex items-center gap-1 md:gap-2 animate-float-y pointer-events-auto`"
             >
-              <span class="text-base md:text-lg">{{
+              <span class="text-xs md:text-base lg:text-lg">{{
                 isARMode ? "❌" : "📱"
               }}</span>
               <span>{{ isARMode ? "TUTUP AR" : "AR MODE" }}</span>
@@ -162,7 +192,7 @@
         </div>
       </div>
 
-      <!-- AR Development Modal -->
+      <!-- AR Development Modal - Responsive -->
       <transition name="modal-fade">
         <div
           v-if="showARModal"
@@ -171,16 +201,22 @@
         >
           <div
             @click.stop
-            class="bg-white rounded-3xl border-4 border-slate-800 shadow-[8px_8px_0_#000] p-6 md:p-8 max-w-md w-full transform transition-all"
+            class="bg-white rounded-2xl md:rounded-3xl border-3 md:border-4 border-slate-800 shadow-[6px_6px_0_#000] md:shadow-[8px_8px_0_#000] p-5 md:p-6 lg:p-8 max-w-md w-full transform transition-all"
             :class="showARModal ? 'scale-100 rotate-0' : 'scale-75 rotate-12'"
           >
             <div class="text-center">
-              <div class="text-7xl mb-4 animate-bounce-slow">🚧</div>
-              <h3 class="text-2xl md:text-3xl font-black text-slate-800 mb-3">
+              <div
+                class="text-5xl md:text-7xl mb-3 md:mb-4 animate-bounce-slow"
+              >
+                🚧
+              </div>
+              <h3
+                class="text-xl md:text-2xl lg:text-3xl font-black text-slate-800 mb-2 md:mb-3"
+              >
                 Sabar Ya!
               </h3>
               <p
-                class="text-slate-600 font-bold text-base md:text-lg mb-6 leading-relaxed"
+                class="text-slate-600 font-bold text-sm md:text-base lg:text-lg mb-4 md:mb-6 leading-relaxed"
               >
                 Fitur AR untuk
                 <span class="text-blue-500">Pembuluh Darah</span> masih dalam
@@ -188,16 +224,16 @@
               </p>
 
               <div
-                class="bg-gradient-to-r from-yellow-50 to-orange-50 border-l-4 border-orange-400 rounded-xl p-4 mb-6"
+                class="bg-gradient-to-r from-yellow-50 to-orange-50 border-l-3 md:border-l-4 border-orange-400 rounded-lg md:rounded-xl p-3 md:p-4 mb-4 md:mb-6"
               >
-                <p class="text-sm font-bold text-slate-700">
+                <p class="text-xs md:text-sm font-bold text-slate-700">
                   💡 Tip: Kamu bisa coba fitur AR di model yang lain dulu!
                 </p>
               </div>
 
               <button
                 @click="showARModal = false"
-                class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white py-4 rounded-2xl font-black text-lg border-b-4 border-purple-700 shadow-lg active:translate-y-1 active:border-b-0 transition-all"
+                class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white py-3 md:py-4 rounded-xl md:rounded-2xl font-black text-base md:text-lg border-b-3 md:border-b-4 border-purple-700 shadow-lg active:translate-y-1 active:border-b-0 transition-all"
               >
                 OKE, SIAP! 🙏
               </button>
@@ -208,6 +244,7 @@
     </template>
   </div>
 </template>
+
 <script setup>
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -228,10 +265,12 @@ const cameraError = ref(null);
 const videoRef = ref(null);
 const canvasRef = ref(null);
 const showARModal = ref(false);
+const autoRotate = ref(true);
 
 // Three.js variables
 let scene, camera, renderer, controls, model;
 let stream = null;
+let animationId = null;
 
 // Mapping Sketchfab model IDs
 const sketchfabModels = {
@@ -294,12 +333,12 @@ const startAR = async () => {
   cameraError.value = null;
 
   try {
-    // Request camera
+    // Request camera dengan fallback untuk berbagai device
     const constraints = {
       video: {
         facingMode: "environment",
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
+        width: { ideal: 1920, max: 1920 },
+        height: { ideal: 1080, max: 1080 },
       },
       audio: false,
     };
@@ -329,6 +368,12 @@ const startAR = async () => {
 };
 
 const stopAR = () => {
+  // Stop animation loop
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+    animationId = null;
+  }
+
   // Stop camera stream
   if (stream) {
     stream.getTracks().forEach((track) => track.stop());
@@ -363,6 +408,7 @@ const stopAR = () => {
 
   isARMode.value = false;
   cameraError.value = null;
+  autoRotate.value = true;
 };
 
 const initThreeAR = () => {
@@ -374,9 +420,13 @@ const initThreeAR = () => {
   // Scene
   scene = new THREE.Scene();
 
-  // Camera
-  camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 1000);
-  camera.position.set(0, 0, 3);
+  // Camera - Responsive FOV
+  const fov = window.innerWidth < 768 ? 60 : 50; // FOV lebih besar untuk mobile
+  camera = new THREE.PerspectiveCamera(fov, w / h, 0.1, 1000);
+
+  // Posisi kamera yang responsive
+  const cameraDistance = window.innerWidth < 768 ? 4 : 3;
+  camera.position.set(0, 0, cameraDistance);
 
   // Renderer dengan alpha (transparan)
   renderer = new THREE.WebGLRenderer({
@@ -388,24 +438,34 @@ const initThreeAR = () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setClearColor(0x000000, 0); // Transparan
 
-  // Controls
+  // Controls - Optimized untuk mobile
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
   controls.enableZoom = true;
   controls.enablePan = false;
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 2.0;
 
-  // Lighting
-  const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+  // Touch sensitivity untuk mobile
+  controls.rotateSpeed = window.innerWidth < 768 ? 0.7 : 1.0;
+  controls.zoomSpeed = window.innerWidth < 768 ? 0.7 : 1.2;
+
+  // Lighting - Ditingkatkan untuk berbagai kondisi
+  const ambientLight = new THREE.AmbientLight(0xffffff, 2);
   scene.add(ambientLight);
 
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
   directionalLight.position.set(5, 5, 5);
   scene.add(directionalLight);
 
-  const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
+  const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
   directionalLight2.position.set(-5, -5, -5);
   scene.add(directionalLight2);
+
+  const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.5);
+  directionalLight3.position.set(0, 5, 0);
+  scene.add(directionalLight3);
 
   // Load Model
   const loader = new GLTFLoader();
@@ -414,11 +474,14 @@ const initThreeAR = () => {
     (gltf) => {
       model = gltf.scene;
 
-      // Scale model agar pas
+      // Scale model agar pas - Responsive
       const box = new THREE.Box3().setFromObject(model);
       const size = box.getSize(new THREE.Vector3());
       const maxDim = Math.max(size.x, size.y, size.z);
-      const scale = 2 / maxDim;
+
+      // Scale berbeda untuk mobile dan desktop
+      const targetSize = window.innerWidth < 768 ? 1.8 : 2.5;
+      const scale = targetSize / maxDim;
       model.scale.multiplyScalar(scale);
 
       // Center model
@@ -438,25 +501,51 @@ const initThreeAR = () => {
   // Animation loop
   const animate = () => {
     if (!isARMode.value) return;
-    requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
 
-    if (controls) controls.update();
+    if (controls) {
+      controls.autoRotate = autoRotate.value;
+      controls.update();
+    }
     if (renderer && scene && camera) {
       renderer.render(scene, camera);
     }
   };
   animate();
 
-  // Handle resize
+  // Handle resize - Responsive
   const onResize = () => {
     if (!renderer || !camera) return;
     const w = window.innerWidth;
     const h = window.innerHeight;
+
+    // Update camera aspect dan FOV
     camera.aspect = w / h;
+    const fov = w < 768 ? 60 : 50;
+    camera.fov = fov;
     camera.updateProjectionMatrix();
+
+    // Update renderer size
     renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Update controls sensitivity
+    if (controls) {
+      controls.rotateSpeed = w < 768 ? 0.7 : 1.0;
+      controls.zoomSpeed = w < 768 ? 0.7 : 1.2;
+    }
   };
   window.addEventListener("resize", onResize);
+};
+
+const resetModelPosition = () => {
+  if (controls) {
+    controls.reset();
+  }
+};
+
+const toggleAutoRotate = () => {
+  autoRotate.value = !autoRotate.value;
 };
 
 const getThemeIcon = (id) => {
@@ -473,7 +562,7 @@ const getThemeIcon = (id) => {
 const getRandomStyle = () => {
   const top = Math.random() * 100;
   const left = Math.random() * 100;
-  const size = Math.random() * 3 + 2;
+  const size = Math.random() * 2 + 1.5; // Lebih kecil untuk mobile
   const duration = Math.random() * 15 + 10;
   const delay = Math.random() * 5;
   return {
@@ -489,6 +578,7 @@ onUnmounted(() => {
   stopAR();
 });
 </script>
+
 <style scoped>
 @keyframes floatRandom {
   0% {
@@ -570,5 +660,30 @@ onUnmounted(() => {
 .modal-fade-enter-from .bg-white,
 .modal-fade-leave-to .bg-white {
   transform: scale(0.8) rotate(12deg);
+}
+
+/* Responsive Touch Improvements */
+@media (max-width: 768px) {
+  /* Improve touch target sizes on mobile */
+  button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Prevent text selection during interactions */
+canvas {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Optimize for mobile performance */
+@media (max-width: 768px) {
+  .animate-float-random {
+    animation-duration: 20s !important; /* Lebih lambat untuk performa */
+  }
 }
 </style>
