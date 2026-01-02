@@ -1,14 +1,12 @@
 // src/data/cards.js
 
-// --- IMPORT MODEL 3D DARI ASSETS ---
-import modelJantung from "../assets/models/heart.glb?url";
-import modelParu from "../assets/models/lungs.glb?url";
-import modelSehat from "../assets/models/health.glb?url";
-
-// Menggunakan heart.glb sebagai placeholder untuk model lain yang belum ada
-import modelPembuluh from "../assets/models/heart.glb?url";
-import modelDarah from "../assets/models/heart.glb?url";
-import modelTubuh from "../assets/models/heart.glb?url";
+// --- IMPORT GAMBAR 2D (SESUAIKAN DENGAN EKSTENSI FILE) ---
+import image2DJantung from "../assets/images/jantung.png";
+import image2DPeredKecil from "../assets/images/peredaran-kecil.jpeg";
+import image2DPeredBesar from "../assets/images/peredaran-besar.jpeg";
+import image2DDarah from "../assets/images/darah.png";
+import image2DPembuluh from "../assets/images/pembuluh-darah.png";
+import image2DSehat from "../assets/images/anak-sehat.png";
 
 export const cardsData = [
   {
@@ -16,13 +14,24 @@ export const cardsData = [
     title: "Jantung: Mesin Ajaib",
     subtitle: "Pusat Kehidupan",
     description:
-      'Halo! Aku adalah mesin utama di tubuhmu. Ukuranku sebesar kepalan tanganmu dan aku duduk manis sedikit di kiri dadamu. Aku punya 4 kamar rahasia (ruang) yang bekerja sama: ada yang menerima darah masuk, ada yang mendorongnya keluar. Pintu-pintu kamarku disebut "Katup" agar darah tidak salah jalan! Tubuhku dibungkus selimut pelindung bernama "Perikardium" agar aku aman dari gesekan. Hebatnya, aku punya listrik alami sendiri yang membuatku berdetak ribuan kali sehari tanpa henti, bahkan saat kamu tidur lelap!',
+      'Halo! Aku adalah mesin utama di tubuhmu. Ukuranku sebesar kepalan tanganmu dan aku duduk manis sedikit di kiri dadamu. Aku punya 4 kamar rahasia (ruang) yang bekerja sama: ada yang menerima darah masuk, ada yang mendorongnya keluar. Pintu-pintu kamarku disebut "Katup" agar darah tidak salah jalan! Tubuhku dibungkus selimut pelindung bernama "Perikardium" agar aku aman dari gesekan. Hebatnya, aku punya listrik alami sendiri yang membuatku berdetak ribuan kali setiap hari tanpa henti, bahkan saat kamu tidur lelap!',
 
-    fullContent: `Jantung adalah organ berotot yang bekerja seperti mesin utama tubuh. Bentuknya menyerupai kepalan tangan dan berada sedikit ke kiri dada. Di dalamnya terdapat empat ruang yang masing-masing memiliki katup untuk mengatur aliran darah. Keempat ruang ini bekerja terkoordinasi: ada yang menerima darah dan ada yang memompa darah keluar.
+    fullContent: `Jantung adalah organ berotot yang bekerja seperti mesin utama tubuh. Bentuknya menyerupai kepalan tangan dan berada sedikit ke kiri dada. Jantung memiliki 4 ruang: 2 serambi (atrium) di bagian atas dan 2 bilik (ventrikel) di bagian bawah.
 
-Jantung dilapisi oleh perikardium, yaitu selaput pelindung yang mencegah gesekan dengan organ sekitar. Kerja jantung diatur oleh sinyal listrik alami tubuh, sehingga detaknya teratur dan bisa menyesuaikan kebutuhan, misalnya saat beristirahat atau beraktivitas.
+STRUKTUR JANTUNG:
+- Serambi Kanan: Menerima darah kotor dari seluruh tubuh
+- Bilik Kanan: Memompa darah ke paru-paru untuk dibersihkan
+- Serambi Kiri: Menerima darah bersih dari paru-paru
+- Bilik Kiri: Memompa darah bersih ke seluruh tubuh
 
-Yang menarik, jantung bisa berdetak puluhan ribu kali dalam sehari, bahkan ketika kita tidur. Semakin aktif kita bergerak, semakin cepat jantung memompa darah untuk memenuhi kebutuhan oksigen tubuh.`,
+KATUP JANTUNG:
+Katup berfungsi seperti pintu satu arah agar darah tidak mengalir balik. Ada 4 katup: Trikuspid, Mitral, Pulmonal, dan Aorta.
+
+PERIKARDIUM:
+Lapisan pelindung yang membungkus jantung, berisi cairan pelumas agar jantung tidak bergesekan dengan organ lain.
+
+SISTEM LISTRIK JANTUNG:
+Jantung punya "generator" listrik alami (nodus SA) yang membuat jantung berdetak teratur tanpa perlu perintah dari otak!`,
 
     funFacts: [
       "💓 Jantungmu berdetak lebih dari 100.000 kali setiap hari!",
@@ -34,8 +43,7 @@ Yang menarik, jantung bisa berdetak puluhan ribu kali dalam sehari, bahkan ketik
 
     image:
       "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?q=80&w=1000&auto=format&fit=crop",
-
-    modelUrl: modelJantung,
+    image2D: image2DJantung,
     color: "bg-rose-500",
     bgGradient: "from-rose-100 to-rose-300",
 
@@ -107,8 +115,7 @@ KAPILER: Pembuluh darah paling kecil dan paling tipis, bahkan begitu tipis sampa
 
     image:
       "https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=1000&auto=format&fit=crop",
-
-    modelUrl: modelPembuluh,
+    image2D: image2DPembuluh,
     color: "bg-blue-500",
     bgGradient: "from-blue-100 to-blue-300",
 
@@ -174,8 +181,7 @@ PLASMA: Cairan bening yang membawa nutrisi, vitamin, dan hormon ke seluruh tubuh
 
     image:
       "https://images.unsplash.com/photo-1615631648086-325025c9e51e?q=80&w=1000&auto=format&fit=crop",
-
-    modelUrl: modelDarah,
+    image2D: image2DDarah,
     color: "bg-red-600",
     bgGradient: "from-red-100 to-red-300",
 
@@ -242,9 +248,7 @@ Pada awalnya, darah yang masuk ke paru-paru adalah darah yang kaya karbon dioksi
 - Karbon dioksida dilepaskan dan dihembuskan saat kita bernapas
 - Oksigen diambil dari udara yang kita hirup
 
-Darah yang sudah memiliki oksigen kemudian kembali ke jantung untuk dipompa ke seluruh tubuh melalui peredaran darah besar.
-
-Peredaran darah kecil juga berperan membantu tubuh menjaga suhu, membersihkan udara dari kotoran yang kita hirup, dan memastikan setiap sel darah merah membawa oksigen dalam jumlah cukup.`,
+Darah yang sudah memiliki oksigen kemudian kembali ke jantung untuk dipompa ke seluruh tubuh melalui peredaran darah besar.`,
 
     funFacts: [
       "🫁 Paru-parumu punya 300 juta kantung udara kecil (alveoli)!",
@@ -256,8 +260,7 @@ Peredaran darah kecil juga berperan membantu tubuh menjaga suhu, membersihkan ud
 
     image:
       "https://plus.unsplash.com/premium_photo-1675808564264-5006b5278453?q=80&w=1000&auto=format&fit=crop",
-
-    modelUrl: modelParu,
+    image2D: image2DPeredKecil,
     color: "bg-sky-400",
     bgGradient: "from-sky-100 to-sky-300",
 
@@ -322,9 +325,7 @@ Dimulai dari bilik kiri jantung yang memompa sekuat tenaga, darah kaya oksigen m
 - Ke kaki agar bisa berlari dan berjalan
 - Ke semua organ penting lainnya
 
-Setelah mengantarkan oksigen dan nutrisi, darah mengambil kembali karbon dioksida dan limbah metabolisme dari sel-sel tubuh. Darah yang sudah "kotor" ini kemudian kembali ke jantung melalui vena untuk dibersihkan lagi di paru-paru.
-
-Perjalanan ini terjadi terus-menerus tanpa henti, sehingga tubuh kita bisa bergerak, berpikir, dan beraktivitas dengan baik setiap hari.`,
+Setelah mengantarkan oksigen dan nutrisi, darah mengambil kembali karbon dioksida dan limbah metabolisme dari sel-sel tubuh.`,
 
     funFacts: [
       "🌍 Darah menyelesaikan satu putaran penuh ke seluruh tubuh hanya dalam 60 detik!",
@@ -336,7 +337,7 @@ Perjalanan ini terjadi terus-menerus tanpa henti, sehingga tubuh kita bisa berge
 
     image:
       "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1000&auto=format&fit=crop",
-    modelUrl: modelTubuh,
+    image2D: image2DPeredBesar,
     color: "bg-orange-500",
     bgGradient: "from-orange-100 to-orange-300",
 
@@ -397,14 +398,7 @@ Perjalanan ini terjadi terus-menerus tanpa henti, sehingga tubuh kita bisa berge
 5. MENGATUR SUHU: Menjaga tubuh tetap hangat atau dingin sesuai kebutuhan
 6. TRANSPORTASI HORMON: Mengirim "pesan kimia" ke organ-organ penting
 7. MENJAGA TEKANAN: Memastikan darah mengalir dengan tekanan yang tepat
-8. PENYEMBUHAN LUKA: Keping darah membantu menutup luka dengan cepat
-
-Tips menjaga kesehatan jantung:
-- Bergerak aktif dan berolahraga ringan
-- Makan buah dan sayur bergizi
-- Tidur cukup 8-10 jam per hari
-- Minum air putih yang cukup
-- Kurangi makanan manis dan berlemak`,
+8. PENYEMBUHAN LUKA: Keping darah membantu menutup luka dengan cepat`,
 
     funFacts: [
       "💪 Jantung adalah otot terkuat di tubuhmu!",
@@ -418,8 +412,7 @@ Tips menjaga kesehatan jantung:
 
     image:
       "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=1000&auto=format&fit=crop",
-
-    modelUrl: modelSehat,
+    image2D: image2DSehat,
     color: "bg-green-500",
     bgGradient: "from-green-100 to-green-300",
 

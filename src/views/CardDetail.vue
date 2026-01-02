@@ -35,108 +35,117 @@
     </div>
 
     <template v-else>
+      <!-- 2D Image with 3D Effect (Portfolio Style) - RESPONSIF -->
       <div
-        class="absolute inset-0 z-10 w-full h-full cursor-grab active:cursor-grabbing"
+        class="absolute inset-0 z-10 w-full h-full flex items-center justify-center pt-20 pb-[200px] md:pt-24 md:pb-[240px] px-4"
       >
-        <model-viewer
-          :src="card.modelUrl"
-          :alt="card.title"
-          ar
-          ar-modes="webxr scene-viewer quick-look"
-          camera-controls
-          auto-rotate
-          rotation-per-second="20deg"
-          shadow-intensity="1"
-          shadow-softness="1"
-          exposure="1.0"
-          camera-orbit="0deg 75deg 105%"
-          field-of-view="30deg"
-          min-camera-orbit="auto auto 5%"
-          max-camera-orbit="auto auto 200%"
-          min-field-of-view="10deg"
-          max-field-of-view="45deg"
-          interpolation-decay="200"
-          interaction-prompt="none"
-          class="w-full h-full focus:outline-none"
-          style="--poster-color: transparent; background-color: transparent"
-        >
-          <button
-            slot="ar-button"
-            class="absolute top-24 right-4 md:right-8 bg-white text-slate-800 p-3 rounded-2xl font-black shadow-[4px_4px_0_#000] border-2 border-black flex flex-col items-center gap-1 animate-wiggle hover:bg-yellow-300 transition-colors pointer-events-auto"
-          >
-            <span class="text-3xl">📱</span>
-            <span class="text-[10px] uppercase tracking-wider">Lihat AR</span>
-          </button>
-        </model-viewer>
-
         <div
-          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-0 animate-fade-in-out"
+          class="image-3d-container cursor-pointer"
+          @click="goTo3DView"
+          @mousemove="handleMouseMove"
+          @mouseleave="handleMouseLeave"
+          @touchstart="handleTouchStart"
+          @touchmove="handleTouchMove"
+          @touchend="handleTouchEnd"
+          :style="getImageStyle()"
         >
-          <div
-            class="bg-black/50 text-white px-4 py-2 rounded-full font-bold backdrop-blur-sm"
-          >
-            👆 Putar aku!
+          <img :src="card.image2D" :alt="card.title" class="responsive-image" />
+          <div class="image-overlay" :class="getOverlayClass()">
+            <div class="view-3d-badge">
+              <span class="text-2xl">🔍</span>
+              <span class="font-black">Lihat Model 3D</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Header dengan Back Button dan Title -->
       <div
-        class="absolute top-0 left-0 w-full p-4 md:p-6 z-50 pointer-events-none"
+        class="absolute top-0 left-0 w-full p-3 md:p-6 z-50 pointer-events-none"
       >
-        <div class="flex justify-between items-start">
-          <!-- Back Button -->
+        <div class="flex justify-between items-start gap-2">
           <router-link to="/" class="pointer-events-auto group">
             <div
-              class="bg-white border-[3px] border-slate-800 shadow-[4px_4px_0_#1e293b] active:shadow-none active:translate-x-1 active:translate-y-1 p-3 rounded-2xl transition-all flex items-center justify-center hover:bg-red-100 group-hover:rotate-3"
+              :class="`border-[3px] border-slate-800 shadow-[4px_4px_0_#1e293b] active:shadow-none active:translate-x-1 active:translate-y-1 p-2.5 md:p-3 rounded-2xl transition-all flex items-center justify-center group-hover:rotate-3 ${
+                card?.bgGradient === 'from-rose-100 to-rose-300'
+                  ? 'bg-rose-50 hover:bg-rose-100'
+                  : card?.bgGradient === 'from-blue-100 to-blue-300'
+                  ? 'bg-blue-50 hover:bg-blue-100'
+                  : card?.bgGradient === 'from-red-100 to-red-300'
+                  ? 'bg-red-50 hover:bg-red-100'
+                  : card?.bgGradient === 'from-sky-100 to-sky-300'
+                  ? 'bg-sky-50 hover:bg-sky-100'
+                  : card?.bgGradient === 'from-orange-100 to-orange-300'
+                  ? 'bg-orange-50 hover:bg-orange-100'
+                  : card?.bgGradient === 'from-green-100 to-green-300'
+                  ? 'bg-green-50 hover:bg-green-100'
+                  : 'bg-white hover:bg-red-100'
+              }`"
             >
-              <ArrowLeft class="w-8 h-8 text-slate-800" stroke-width="4" />
+              <ArrowLeft
+                class="w-7 h-7 md:w-8 md:h-8 text-slate-800"
+                stroke-width="4"
+              />
             </div>
           </router-link>
 
-          <!-- Title Badge -->
-          <div
-            class="bg-white/90 backdrop-blur-sm border-[3px] border-blue-400 shadow-[4px_4px_0_#60A5FA] px-6 py-3 rounded-[2rem] transform -rotate-2 animate-float-y pointer-events-auto"
-          >
+          <!-- Title Badge + Fun Fact Button Container (Sama seperti Model3DView) -->
+          <div class="flex flex-col items-end gap-2 flex-1">
+            <!-- Title Badge -->
             <div
-              class="text-[10px] md:text-xs font-black text-blue-400 uppercase tracking-widest mb-1"
+              class="bg-white/90 backdrop-blur-sm border-[3px] border-blue-400 shadow-[4px_4px_0_#60A5FA] px-4 py-2 md:px-6 md:py-3 rounded-[2rem] transform -rotate-2 animate-float-y pointer-events-auto"
             >
-              ✨ Ruang Belajar ✨
+              <div
+                class="text-[10px] md:text-xs font-black text-blue-400 uppercase tracking-widest mb-0.5 md:mb-1"
+              >
+                ✨ Ruang Belajar ✨
+              </div>
+              <div
+                class="text-base md:text-3xl font-black text-slate-700 leading-none"
+              >
+                {{ card?.title }}
+              </div>
             </div>
-            <div
-              class="text-xl md:text-3xl font-black text-slate-700 leading-none"
-            >
-              {{ card?.title }}
-            </div>
-          </div>
-        </div>
 
-        <!-- Fun Fact Button (Dibawah Title) -->
-        <div class="flex justify-end mt-3">
-          <button
-            @click="toggleFunFact"
-            class="pointer-events-auto bg-gradient-to-r from-red-500 to-yellow-400 hover:from-red-400 hover:to-yellow-300 text-white px-5 py-2.5 rounded-full font-black text-sm shadow-[3px_3px_0_#000] border-2 border-black transition-all active:translate-x-1 active:translate-y-1 active:shadow-none flex items-center gap-2 animate-pulse-slow"
-          >
-            <Lightbulb class="w-5 h-5" />
-            <span>FUN FACT</span>
-          </button>
+            <!-- Fun Fact Button (Sejajar dengan AR Button di Model3DView) -->
+            <button
+              @click="toggleFunFact"
+              class="pointer-events-auto bg-gradient-to-r from-red-500 to-yellow-400 hover:from-red-400 hover:to-yellow-300 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full font-black text-xs md:text-sm shadow-[3px_3px_0_#000] border-2 border-white transition-all active:translate-x-1 active:translate-y-1 active:shadow-none flex items-center gap-2 animate-float-y"
+            >
+              <Lightbulb class="w-4 h-4 md:w-5 md:h-5" />
+              <span>FUN FACT</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- FIXED: Reduced max-height untuk container content -->
+      <!-- Box Deskripsi Diperkecil & Diturunkan -->
       <div
-        class="absolute bottom-4 md:bottom-8 left-0 w-full z-50 px-4 pointer-events-none flex justify-center"
+        class="absolute bottom-3 md:bottom-6 left-0 w-full z-50 px-3 md:px-4 pointer-events-none flex justify-center"
       >
         <div
-          class="bg-white border-[4px] border-slate-800 shadow-[0_8px_0_rgba(0,0,0,0.2)] rounded-[2.5rem] p-5 md:p-6 w-full max-w-3xl relative overflow-hidden pointer-events-auto"
+          :class="`border-[4px] border-slate-800 shadow-[0_8px_0_rgba(0,0,0,0.2)] rounded-[2rem] md:rounded-[2.5rem] p-4 md:p-5 w-full max-w-3xl relative overflow-hidden pointer-events-auto ${
+            card?.bgGradient === 'from-rose-100 to-rose-300'
+              ? 'bg-rose-50/95'
+              : card?.bgGradient === 'from-blue-100 to-blue-300'
+              ? 'bg-blue-50/95'
+              : card?.bgGradient === 'from-red-100 to-red-300'
+              ? 'bg-red-50/95'
+              : card?.bgGradient === 'from-sky-100 to-sky-300'
+              ? 'bg-sky-50/95'
+              : card?.bgGradient === 'from-orange-100 to-orange-300'
+              ? 'bg-orange-50/95'
+              : card?.bgGradient === 'from-green-100 to-green-300'
+              ? 'bg-green-50/95'
+              : 'bg-white'
+          }`"
         >
-          <div class="flex flex-col md:flex-row gap-4 md:gap-6 items-center">
+          <div class="flex flex-col md:flex-row gap-3 md:gap-4 items-center">
             <div
-              class="flex-shrink-0 flex flex-row md:flex-col items-center gap-4 w-full md:w-auto justify-center"
+              class="flex-shrink-0 flex flex-row md:flex-col items-center gap-3 md:gap-4 w-full md:w-auto justify-center"
             >
               <button
                 @click="playAudio"
-                :class="`w-16 h-16 md:w-20 md:h-20 rounded-full border-[4px] border-slate-800 shadow-[4px_4px_0_#000] flex items-center justify-center transition-all active:translate-y-1 active:shadow-none ${
+                :class="`w-14 h-14 md:w-16 md:h-16 rounded-full border-[4px] border-slate-800 shadow-[4px_4px_0_#000] flex items-center justify-center transition-all active:translate-y-1 active:shadow-none ${
                   isPlaying
                     ? 'bg-pink-400 animate-pulse'
                     : 'bg-[#FFD93D] hover:bg-[#FFC107]'
@@ -144,32 +153,31 @@
               >
                 <component
                   :is="isPlaying ? Pause : Play"
-                  class="w-8 h-8 text-slate-900 fill-current"
+                  class="w-6 h-6 md:w-8 md:h-8 text-slate-900 fill-current"
                   stroke-width="3"
                 />
               </button>
 
               <button
                 @click="goToQuiz"
-                class="flex-1 md:w-full bg-blue-400 hover:bg-blue-300 text-white border-[3px] border-slate-800 px-4 py-3 rounded-xl font-black text-sm shadow-[4px_4px_0_#1e293b] active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2"
+                class="flex-1 md:w-full bg-blue-400 hover:bg-blue-300 text-white border-[3px] border-slate-800 px-4 py-2.5 md:py-3 rounded-xl font-black text-xs md:text-sm shadow-[4px_4px_0_#1e293b] active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2"
               >
-                <span class="text-xl">🎮</span>
+                <span class="text-lg md:text-xl">🎮</span>
                 <span>KUIS</span>
               </button>
             </div>
 
             <div class="flex-1 text-center md:text-left w-full min-w-0">
-              <!-- FIXED: max-h lebih kecil dari 30vh/250px menjadi 20vh/180px -->
               <div
-                class="relative bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 md:p-5 max-h-[20vh] md:max-h-[180px] overflow-y-auto custom-scrollbar group"
+                class="relative bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 md:p-4 h-[100px] md:h-[120px] overflow-y-auto custom-scrollbar group"
               >
                 <span
-                  class="absolute top-2 left-2 text-4xl text-blue-200 opacity-50 font-serif leading-none"
+                  class="absolute top-1 left-1 md:top-2 md:left-2 text-3xl md:text-4xl text-blue-200 opacity-50 font-serif leading-none"
                   >"</span
                 >
 
                 <p
-                  class="text-base md:text-lg text-slate-600 font-bold leading-relaxed relative z-10 pr-2 whitespace-pre-line"
+                  class="text-sm md:text-base text-slate-600 font-bold leading-relaxed relative z-10 pr-2 whitespace-pre-line"
                 >
                   {{ currentContent }}
                 </p>
@@ -177,21 +185,21 @@
                 <button
                   v-if="!showFullContent && card.fullContent"
                   @click="showFullContent = true"
-                  class="mt-3 text-blue-500 font-black text-sm hover:text-blue-600 transition-colors underline"
+                  class="mt-2 text-blue-500 font-black text-xs md:text-sm hover:text-blue-600 transition-colors underline"
                 >
                   Baca Selengkapnya 📖
                 </button>
               </div>
 
               <div
-                class="mt-3 flex items-center justify-center md:justify-between gap-2 px-2"
+                class="mt-2 md:mt-3 flex items-center justify-center md:justify-between gap-2 px-2"
               >
                 <div class="flex items-center gap-2">
-                  <span class="text-xl animate-bounce">{{
+                  <span class="text-base md:text-xl animate-bounce">{{
                     isPlaying ? "🗣️" : "😶"
                   }}</span>
                   <span
-                    class="text-xs font-bold text-slate-400 uppercase tracking-wide"
+                    class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wide"
                   >
                     {{
                       isPlaying ? "Sedang bercerita..." : "Klik tombol kuning!"
@@ -225,7 +233,6 @@
         </div>
       </div>
 
-      <!-- Fun Fact Modal -->
       <transition name="modal-fade">
         <div
           v-if="showFunFact"
@@ -286,7 +293,6 @@
 </template>
 
 <script setup>
-import "@google/model-viewer";
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { cardsData } from "../data/cards";
@@ -299,6 +305,11 @@ const isPlaying = ref(false);
 const showFunFact = ref(false);
 const showFullContent = ref(false);
 
+// Parallax effect state
+const mouseX = ref(0);
+const mouseY = ref(0);
+const isHovering = ref(false);
+
 const currentContent = computed(() => {
   if (!card.value) return "";
   if (showFullContent.value && card.value.fullContent) {
@@ -307,13 +318,91 @@ const currentContent = computed(() => {
   return card.value.description;
 });
 
+const goTo3DView = () => {
+  router.push(`/model3d/${card.value.id}`);
+};
+
+const handleMouseMove = (e) => {
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+
+  mouseX.value = ((x - centerX) / centerX) * 15; // Max 15deg rotation
+  mouseY.value = ((y - centerY) / centerY) * -15;
+  isHovering.value = true;
+};
+
+const handleMouseLeave = () => {
+  mouseX.value = 0;
+  mouseY.value = 0;
+  isHovering.value = false;
+};
+
+// Touch handlers untuk mobile
+const handleTouchStart = (e) => {
+  isHovering.value = true;
+};
+
+const handleTouchMove = (e) => {
+  e.preventDefault(); // Prevent scrolling while dragging
+
+  const touch = e.touches[0];
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
+
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+
+  mouseX.value = ((x - centerX) / centerX) * 15; // Max 15deg rotation
+  mouseY.value = ((y - centerY) / centerY) * -15;
+};
+
+const handleTouchEnd = () => {
+  // Reset position smoothly after touch ends
+  mouseX.value = 0;
+  mouseY.value = 0;
+  isHovering.value = false;
+};
+
+const getImageStyle = () => {
+  return {
+    transform: `perspective(1000px) rotateY(${mouseX.value}deg) rotateX(${
+      mouseY.value
+    }deg) scale(${isHovering.value ? 1.05 : 1})`,
+    transition: isHovering.value
+      ? "transform 0.1s ease-out"
+      : "transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)",
+    touchAction: "none", // Prevent default touch behaviors
+  };
+};
+
+// Function untuk mendapatkan class overlay sesuai warna card
+const getOverlayClass = () => {
+  if (!card.value) return "";
+
+  const gradientMap = {
+    "from-rose-100 to-rose-300": "overlay-rose",
+    "from-blue-100 to-blue-300": "overlay-blue",
+    "from-red-100 to-red-300": "overlay-red",
+    "from-sky-100 to-sky-300": "overlay-sky",
+    "from-orange-100 to-orange-300": "overlay-orange",
+    "from-green-100 to-green-300": "overlay-green",
+  };
+
+  return gradientMap[card.value.bgGradient] || "overlay-default";
+};
+
 const getThemeIcon = (id) => {
   if (!id) return "✨";
-  if (id.includes("jantung")) return "❤️";
-  if (id.includes("pembuluh")) return "🛣️";
+  if (id.includes("jantung")) return "🫀";
+  if (id.includes("pembuluh")) return "💉";
   if (id.includes("darah")) return "🩸";
-  if (id.includes("paru") || id.includes("kecil")) return "🌬️";
-  if (id.includes("besar")) return "🏃";
+  if (id.includes("kecil")) return "🌬️";
+  if (id.includes("besar")) return "🧠";
   if (id.includes("gangguan")) return "🦠";
   if (id.includes("sehat")) return "🥗";
   return "🌟";
@@ -365,7 +454,6 @@ const playAudio = () => {
 const playFunFactsAudio = () => {
   if (!card.value || !card.value.funFacts) return;
   speechSynthesis.cancel();
-
   const allFacts = card.value.funFacts.join(". ");
   const utterance = new SpeechSynthesisUtterance(allFacts);
   const selectedVoice = getBestVoice();
@@ -399,7 +487,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Animasi Float Random Background */
 @keyframes floatRandom {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -420,7 +507,6 @@ onUnmounted(() => {
   animation: floatRandom linear infinite;
 }
 
-/* Animasi Float Y (Naik Turun Halus) */
 @keyframes floatY {
   0%,
   100% {
@@ -434,21 +520,6 @@ onUnmounted(() => {
   animation: floatY 3s infinite ease-in-out;
 }
 
-/* Animasi Wiggle (Goyang) */
-@keyframes wiggle {
-  0%,
-  100% {
-    transform: rotate(-3deg);
-  }
-  50% {
-    transform: rotate(3deg);
-  }
-}
-.animate-wiggle {
-  animation: wiggle 2s ease-in-out infinite;
-}
-
-/* Animasi Music Bar */
 @keyframes musicBar {
   0%,
   100% {
@@ -462,7 +533,6 @@ onUnmounted(() => {
   animation: musicBar 0.4s ease-in-out infinite alternate;
 }
 
-/* Animasi Loading Bar */
 @keyframes loadingBar {
   0% {
     transform: translateX(-100%);
@@ -475,31 +545,6 @@ onUnmounted(() => {
   animation: loadingBar 2s infinite linear;
 }
 
-/* Animasi Fade Hint */
-@keyframes fadeOut {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -40%);
-  }
-  20% {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
-  80% {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -60%);
-  }
-}
-.animate-fade-in-out {
-  animation: fadeOut 4s ease-out forwards;
-  animation-delay: 1s;
-}
-
-/* Pulse Slow */
 @keyframes pulseSlow {
   0%,
   100% {
@@ -513,7 +558,6 @@ onUnmounted(() => {
   animation: pulseSlow 2s ease-in-out infinite;
 }
 
-/* Modal Fade */
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: all 0.3s ease;
@@ -527,7 +571,6 @@ onUnmounted(() => {
   transform: scale(0.8) rotate(12deg);
 }
 
-/* Custom Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
 }
@@ -543,5 +586,139 @@ onUnmounted(() => {
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* Portfolio Style 3D Image Container - RESPONSIF */
+.image-3d-container {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  aspect-ratio: 4/3;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  background: white;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+@media (min-width: 768px) {
+  .image-3d-container {
+    max-width: 500px;
+    aspect-ratio: 16/9;
+    border-radius: 24px;
+    border: 4px solid rgba(255, 255, 255, 0.8);
+  }
+}
+
+.image-3d-container:hover {
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.35);
+}
+
+.responsive-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Overlay colors matching card backgrounds */
+.overlay-rose {
+  background: linear-gradient(
+    135deg,
+    rgba(251, 113, 133, 0.9),
+    rgba(244, 63, 94, 0.9)
+  );
+}
+
+.overlay-blue {
+  background: linear-gradient(
+    135deg,
+    rgba(96, 165, 250, 0.9),
+    rgba(59, 130, 246, 0.9)
+  );
+}
+
+.overlay-red {
+  background: linear-gradient(
+    135deg,
+    rgba(248, 113, 113, 0.9),
+    rgba(239, 68, 68, 0.9)
+  );
+}
+
+.overlay-sky {
+  background: linear-gradient(
+    135deg,
+    rgba(125, 211, 252, 0.9),
+    rgba(56, 189, 248, 0.9)
+  );
+}
+
+.overlay-orange {
+  background: linear-gradient(
+    135deg,
+    rgba(251, 146, 60, 0.9),
+    rgba(249, 115, 22, 0.9)
+  );
+}
+
+.overlay-green {
+  background: linear-gradient(
+    135deg,
+    rgba(74, 222, 128, 0.9),
+    rgba(34, 197, 94, 0.9)
+  );
+}
+
+.overlay-default {
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.9),
+    rgba(147, 51, 234, 0.9)
+  );
+}
+
+.image-3d-container:hover .image-overlay {
+  opacity: 1;
+}
+
+.view-3d-badge {
+  background: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  font-size: 0.875rem;
+}
+
+@media (min-width: 768px) {
+  .view-3d-badge {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+.image-3d-container:hover .view-3d-badge {
+  transform: translateY(0);
 }
 </style>
