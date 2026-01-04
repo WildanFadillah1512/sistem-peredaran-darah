@@ -72,11 +72,4 @@ html, body {
   }
 }
 
-@keyframes pulseSlow {
-  0%, 100% { transform: scale(1); opacity: 0.3; }
-  50% { transform: scale(1.2); opacity: 0.5; }
-}
-.animate-pulse-slow {
-  animation: pulseSlow 8s infinite ease-in-out;
-}
 </style>

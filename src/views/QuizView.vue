@@ -331,9 +331,6 @@ onMounted(() => { if (!card.value) router.replace("/"); });
 @keyframes floatSlow { 0% { transform: translateX(-100px); } 100% { transform: translateX(100vw); } }
 .animate-float-slow { animation: floatSlow linear infinite; }
 
-@keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-.animate-float-y { animation: floatY 3s ease-in-out infinite; }
-
 @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.5); } }
 .animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
 

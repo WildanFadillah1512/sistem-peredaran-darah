@@ -1,5 +1,5 @@
-/* Import Font 'Fredoka' yang bulat dan lucu */
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap');
+/* Import Shared Animations & Font */
+@import './shared-animations.css';
 
 @tailwind base;
 @tailwind components;
@@ -7,12 +7,13 @@
 
 :root {
   /* Ganti background jadi warna cerah (Krem/Putih Gading) */
-  background-color: #fffbeb; 
+  background-color: #fffbeb;
   color: #333;
 }
 
 body {
-  font-family: 'Fredoka', sans-serif; /* Font utama jadi Fredoka */
+  font-family: 'Fredoka', sans-serif;
+  /* Font utama jadi Fredoka */
   overflow-x: hidden;
 }
 
@@ -20,9 +21,11 @@ body {
 ::-webkit-scrollbar {
   width: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: #f1f5f9;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #fbbf24;
   border-radius: 10px;

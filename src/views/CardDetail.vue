@@ -2,10 +2,7 @@
   <div
     class="min-h-screen relative overflow-hidden font-['Fredoka'] selection:bg-pink-300 selection:text-white bg-[#E0F7FA]"
   >
-    <component is="style">
-      @import
-      url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600;700&display=swap');
-    </component>
+
 
     <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
       <div
@@ -37,7 +34,7 @@
     <template v-else>
       <!-- 2D Image with 3D Effect (Portfolio Style) - RESPONSIF -->
       <div
-        class="absolute inset-0 z-10 w-full h-full flex items-center justify-center pt-20 pb-[200px] md:pt-24 md:pb-[240px] px-4"
+        class="absolute inset-0 z-10 w-full h-full flex items-center justify-center pt-29 pb-[200px] md:pt-24 md:pb-[240px] px-4"
       >
         <div
           class="image-3d-container cursor-pointer"
@@ -65,21 +62,7 @@
         <div class="flex justify-between items-start gap-2">
           <router-link to="/" class="pointer-events-auto group">
             <div
-              :class="`border-[3px] border-slate-800 shadow-[4px_4px_0_#1e293b] active:shadow-none active:translate-x-1 active:translate-y-1 p-2.5 md:p-3 rounded-2xl transition-all flex items-center justify-center group-hover:rotate-3 ${
-                card?.bgGradient === 'from-rose-100 to-rose-300'
-                  ? 'bg-rose-50 hover:bg-rose-100'
-                  : card?.bgGradient === 'from-blue-100 to-blue-300'
-                  ? 'bg-blue-50 hover:bg-blue-100'
-                  : card?.bgGradient === 'from-red-100 to-red-300'
-                  ? 'bg-red-50 hover:bg-red-100'
-                  : card?.bgGradient === 'from-sky-100 to-sky-300'
-                  ? 'bg-sky-50 hover:bg-sky-100'
-                  : card?.bgGradient === 'from-orange-100 to-orange-300'
-                  ? 'bg-orange-50 hover:bg-orange-100'
-                  : card?.bgGradient === 'from-green-100 to-green-300'
-                  ? 'bg-green-50 hover:bg-green-100'
-                  : 'bg-white hover:bg-red-100'
-              }`"
+              :class="`border-[3px] border-slate-800 shadow-[4px_4px_0_#1e293b] active:shadow-none active:translate-x-1 active:translate-y-1 p-2.5 md:p-3 rounded-2xl transition-all flex items-center justify-center group-hover:rotate-3 ${getBackgroundClass('button')}`"
             >
               <ArrowLeft
                 class="w-7 h-7 md:w-8 md:h-8 text-slate-800"
@@ -120,24 +103,10 @@
 
       <!-- Box Deskripsi Diperkecil & Diturunkan -->
       <div
-        class="absolute bottom-3 md:bottom-6 left-0 w-full z-50 px-3 md:px-4 pointer-events-none flex justify-center"
+        class="absolute bottom-16 md:bottom-6 left-0 w-full z-50 px-3 md:px-4 pointer-events-none flex justify-center"
       >
         <div
-          :class="`border-[4px] border-slate-800 shadow-[0_8px_0_rgba(0,0,0,0.2)] rounded-[2rem] md:rounded-[2.5rem] p-4 md:p-5 w-full max-w-3xl relative overflow-hidden pointer-events-auto ${
-            card?.bgGradient === 'from-rose-100 to-rose-300'
-              ? 'bg-rose-50/95'
-              : card?.bgGradient === 'from-blue-100 to-blue-300'
-              ? 'bg-blue-50/95'
-              : card?.bgGradient === 'from-red-100 to-red-300'
-              ? 'bg-red-50/95'
-              : card?.bgGradient === 'from-sky-100 to-sky-300'
-              ? 'bg-sky-50/95'
-              : card?.bgGradient === 'from-orange-100 to-orange-300'
-              ? 'bg-orange-50/95'
-              : card?.bgGradient === 'from-green-100 to-green-300'
-              ? 'bg-green-50/95'
-              : 'bg-white'
-          }`"
+          :class="`border-[4px] border-slate-800 shadow-[0_8px_0_rgba(0,0,0,0.2)] rounded-[2rem] md:rounded-[2.5rem] p-4 md:p-5 w-full max-w-3xl relative overflow-hidden pointer-events-auto ${getBackgroundClass('default')}`"
         >
           <div class="flex flex-col md:flex-row gap-3 md:gap-4 items-center">
             <div
@@ -169,7 +138,8 @@
 
             <div class="flex-1 text-center md:text-left w-full min-w-0">
               <div
-                class="relative bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 md:p-4 h-[100px] md:h-[120px] overflow-y-auto custom-scrollbar group"
+                class="relative bg-slate-50 border-2 border-slate-200 rounded-2xl p-3 md:p-4 h-[100px] md:h-[120px] overflow-y-auto overflow-x-hidden custom-scrollbar group"
+                style="-webkit-overflow-scrolling: touch; overscroll-behavior: contain;"
               >
                 <span
                   class="absolute top-1 left-1 md:top-2 md:left-2 text-3xl md:text-4xl text-blue-200 opacity-50 font-serif leading-none"
@@ -408,6 +378,23 @@ const getThemeIcon = (id) => {
   return "🌟";
 };
 
+// Utility function untuk mendapatkan background class berdasarkan gradient
+const getBackgroundClass = (type = 'default') => {
+  if (!card.value) return 'bg-white';
+  
+  const gradientMap = {
+    'from-rose-100 to-rose-300': { default: 'bg-rose-50/95', button: 'bg-rose-50 hover:bg-rose-100' },
+    'from-blue-100 to-blue-300': { default: 'bg-blue-50/95', button: 'bg-blue-50 hover:bg-blue-100' },
+    'from-red-100 to-red-300': { default: 'bg-red-50/95', button: 'bg-red-50 hover:bg-red-100' },
+    'from-sky-100 to-sky-300': { default: 'bg-sky-50/95', button: 'bg-sky-50 hover:bg-sky-100' },
+    'from-orange-100 to-orange-300': { default: 'bg-orange-50/95', button: 'bg-orange-50 hover:bg-orange-100' },
+    'from-green-100 to-green-300': { default: 'bg-green-50/95', button: 'bg-green-50 hover:bg-green-100' },
+  };
+  
+  const colors = gradientMap[card.value.bgGradient];
+  return colors ? colors[type] : (type === 'button' ? 'bg-white hover:bg-red-100' : 'bg-white');
+};
+
 const getRandomStyle = () => {
   const top = Math.random() * 100;
   const left = Math.random() * 100;
@@ -487,77 +474,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-@keyframes floatRandom {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.3;
-  }
-  80% {
-    opacity: 0.3;
-  }
-  100% {
-    transform: translateY(-120px) rotate(360deg);
-    opacity: 0;
-  }
-}
-.animate-float-random {
-  animation: floatRandom linear infinite;
-}
-
-@keyframes floatY {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-2deg);
-  }
-  50% {
-    transform: translateY(-6px) rotate(-2deg);
-  }
-}
-.animate-float-y {
-  animation: floatY 3s infinite ease-in-out;
-}
-
-@keyframes musicBar {
-  0%,
-  100% {
-    height: 30%;
-  }
-  50% {
-    height: 100%;
-  }
-}
-.animate-music-bar {
-  animation: musicBar 0.4s ease-in-out infinite alternate;
-}
-
-@keyframes loadingBar {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-.animate-loading-bar {
-  animation: loadingBar 2s infinite linear;
-}
-
-@keyframes pulseSlow {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-.animate-pulse-slow {
-  animation: pulseSlow 2s ease-in-out infinite;
-}
-
+/* Modal transitions */
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: all 0.3s ease;
@@ -569,23 +486,6 @@ onUnmounted(() => {
 .modal-fade-enter-from .bg-white,
 .modal-fade-leave-to .bg-white {
   transform: scale(0.8) rotate(12deg);
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 10px;
-  margin: 10px 0;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 10px;
-  border: 2px solid #f1f5f9;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
 }
 
 /* Portfolio Style 3D Image Container - RESPONSIF */

@@ -1,12 +1,7 @@
 <template>
   <div
-    class="min-h-screen relative overflow-hidden font-['Fredoka'] selection:bg-pink-300 selection:text-white bg-[#E0F7FA]"
+    class="min-h-screen relative overflow-y-auto md:overflow-hidden font-['Fredoka'] selection:bg-pink-300 selection:text-white bg-[#E0F7FA]"
   >
-    <component is="style">
-      @import
-      url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600;700&display=swap');
-    </component>
-
     <!-- Background -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
       <div
@@ -111,9 +106,10 @@
           <p>{{ cameraError }}</p>
         </div>
 
-        <!-- AR Controls - Responsive Position -->
+        <!-- AR Controls - Moved to Top Left -->
         <div
-          class="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2 md:gap-4"
+          v-if="isARMode"
+          class="absolute top-20 md:top-24 left-2 md:left-4 z-30 flex flex-col gap-2"
         >
           <button
             @click="resetModelPosition"
@@ -285,7 +281,7 @@ const sketchfabModels = {
 // Mapping model lokal untuk AR
 const arModelPaths = {
   jantung: new URL("../assets/models/heart.glb", import.meta.url).href,
-  darah: new URL("../assets/models/health.glb", import.meta.url).href,
+  darah: new URL("../assets/models/blood.glb", import.meta.url).href,
   "peredaran-kecil": new URL(
     "../assets/models/circulation-system.glb",
     import.meta.url
@@ -580,38 +576,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-@keyframes floatRandom {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.3;
-  }
-  80% {
-    opacity: 0.3;
-  }
-  100% {
-    transform: translateY(-120px) rotate(360deg);
-    opacity: 0;
-  }
-}
-.animate-float-random {
-  animation: floatRandom linear infinite;
-}
-
-@keyframes floatY {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-2deg);
-  }
-  50% {
-    transform: translateY(-6px) rotate(-2deg);
-  }
-}
-.animate-float-y {
-  animation: floatY 3s infinite ease-in-out;
-}
+/* Modal transitions */
 
 @keyframes fadeOut {
   0% {

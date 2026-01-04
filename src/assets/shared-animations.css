@@ -1,0 +1,112 @@
+/* Shared Animations - Digunakan di Multiple Components */
+
+/* Font Import - Fredoka Font */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600;700&display=swap');
+
+/* Float Random Animation - Used in CardDetail & Model3DView */
+@keyframes floatRandom {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.3;
+  }
+  80% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-120px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.animate-float-random {
+  animation: floatRandom linear infinite;
+}
+
+/* Float Y Animation - Used in CardDetail, Model3DView & QuizView */
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-2deg);
+  }
+}
+
+.animate-float-y {
+  animation: floatY 3s infinite ease-in-out;
+}
+
+/* Pulse Slow Animation - Used in App.vue & CardDetail */
+@keyframes pulseSlow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 2s ease-in-out infinite;
+}
+
+/* Music Bar Animation - Used in CardDetail */
+@keyframes musicBar {
+  0%,
+  100% {
+    height: 30%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+.animate-music-bar {
+  animation: musicBar 0.4s ease-in-out infinite alternate;
+}
+
+/* Loading Bar Animation - Used in CardDetail */
+@keyframes loadingBar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-loading-bar {
+  animation: loadingBar 2s infinite linear;
+}
+
+/* Custom Scrollbar Styles - Used in CardDetail & Modal */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+  border: 2px solid #f1f5f9;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Mobile Scrolling Improvements */
+.custom-scrollbar {
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
