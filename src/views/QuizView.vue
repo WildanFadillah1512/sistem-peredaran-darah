@@ -223,7 +223,7 @@ const startQuiz = () => {
 };
 
 const finishAndSendWA = () => {
-  const phoneNumber = "6285846456303";
+  const phoneNumber = "6281282803243";
   const finalScore = score.value; // Jumlah benar
   const finalPercentage = Math.round(finalScorePercentage.value);
   
